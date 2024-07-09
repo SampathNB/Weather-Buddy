@@ -1,4 +1,5 @@
 import { ChangeCity, CityDetails, Forecast, WeeklyWeather } from "@components";
+import { useEffect } from "react";
 
 function App() {
   return (
@@ -10,8 +11,8 @@ function App() {
             <ChangeCity />
           </div>
           <div className="flex gap-10 h-full">
-            <Forecast />
             <WeeklyWeather />
+            <Forecast />
           </div>
         </div>
       </div>

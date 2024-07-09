@@ -6,7 +6,7 @@ import { Day } from "./Day";
 export const WeeklyWeather = () => {
   return (
     <div className="bg-white bg-opacity-10 p-5 px-7 rounded-[40px] w-1/3 flex flex-col">
-      <Swiper
+      {/* <Swiper
         spaceBetween={50}
         slidesPerView={5}
         loop={true}
@@ -34,7 +34,7 @@ export const WeeklyWeather = () => {
         <SwiperSlide>
           <Day name="Sat" weather={Icons.Sun} />
         </SwiperSlide>
-      </Swiper>
+      </Swiper> */}
       <DayWeather />
     </div>
   );

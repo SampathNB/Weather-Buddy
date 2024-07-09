@@ -1,32 +1,37 @@
-import { WeatherCondition } from '../WeatherCondition'
-import { Icons } from '@utils'
+import { useSelector } from "react-redux";
+import { WeatherCondition } from "../WeatherCondition";
+import { formatTemperature, Icons } from "@utils";
 
 export const DayWeather = () => {
+  const weather = useSelector((state: any) => state.weatherDetails);
   return (
     <>
       <div className="flex flex-col h-full">
-        <p className="flex items-center text-xl gap-1 font-medium mb-4">
+        <p className="flex items-center text-xl gap-1 font-medium mb-5">
           AIR Conditions
         </p>
         <div className="flex flex-col justify-between h-full gap-3 mb-4">
           <WeatherCondition
             icon={Icons.Temperature}
             condition="Real Feel"
-            result="30°"
+            result={
+              weather &&
+              formatTemperature(weather?.weatherData?.main?.feels_like)
+            }
           />
           <WeatherCondition
             icon={Icons.Wind}
             condition="Wind"
-            result="0.8 km/hr"
+            result={weather?.weatherData?.wind?.speed + "m/s"}
           />
           <WeatherCondition
-            icon={Icons.Drop}
-            condition="Chance of rain"
+            icon={Icons.Humidity}
+            condition="Humidity"
             result="2%"
           />
           <WeatherCondition icon={Icons.Sun} condition="UV Index" result="4" />
         </div>
       </div>
     </>
-  )
-}
+  );
+};
