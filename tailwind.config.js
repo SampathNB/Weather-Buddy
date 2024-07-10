@@ -1,18 +1,17 @@
 /** @type {import('tailwindcss').Config} */
-import defaultTheme from "tailwindcss/defaultTheme"
+import defaultTheme from "tailwindcss/defaultTheme";
 
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       fontFamily: {
-        'inter': ['"Inter"', ...defaultTheme.fontFamily.sans],
-      }
+        inter: ['"Inter"', ...defaultTheme.fontFamily.sans],
+      },
+      colors: {
+        theme: "#D69E36",
+      },
     },
   },
   plugins: [],
-}
-
+};

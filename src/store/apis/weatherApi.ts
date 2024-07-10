@@ -8,12 +8,18 @@ export const weatherApi = createApi({
   }),
   endpoints: (builder) => ({
     getCurrentWeather: builder.query({
-      query: (data) => ({
+      query: (location) => ({
         method: "GET",
-        url: `data/2.5/weather?lat=${data?.lat}&lon=${data?.lon}&appid=${config.API_KEY}&units=metric`,
+        url: `forecast.json?key=${config.API_KEY}&q=${location}&days=2&aqi=no&alerts=yes`,
+      }),
+    }),
+    getGeoCityData: builder.query({
+      query: (location) => ({
+        method: "GET",
+        url: `search.json?key=${config.API_KEY}&q=${location}`,
       }),
     }),
   }),
 });
 
-export const { useGetCurrentWeatherQuery } = weatherApi;
+export const { useGetCurrentWeatherQuery, useGetGeoCityDataQuery } = weatherApi;

@@ -4,28 +4,31 @@ import { formatTemperature, Icons } from "@utils";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { ChangeCity } from "../ChangeCity";
+import { CityType } from "src/types";
 
-export const CityDetails = () => {
-  const [response, setResponse] = useState(skipToken);
+export const CityWeatherDetails = () => {
   const dispatch = useDispatch();
-
-  let responseData;
+  const [location, setLocation] = useState<string | symbol>(skipToken);
+  const { data, isLoading } = useGetCurrentWeatherQuery(location);
 
   useEffect(() => {
     navigator.geolocation.watchPosition((position) => {
-      responseData = {
-        lat: position?.coords?.latitude,
-        lon: position?.coords?.longitude,
-      };
-      setResponse(responseData);
-      console.log("responseData", responseData);
+      console.log(position);
+      let locationData =
+        position?.coords?.latitude + "," + position?.coords?.longitude;
+      setLocation(locationData);
     });
-  }, []);
+  }, [navigator.geolocation]);
 
-  const { data, isLoading } = useGetCurrentWeatherQuery(response);
+  const getCityDetails = (city: CityType) => {
+    console.log(city);
+    setLocation({ lat: city.lat, lon: city.lon });
+  };
 
   useEffect(() => {
     dispatch(getWeatherData(data));
+    console.log(data);
   }, [isLoading, data]);
 
   return (
@@ -33,16 +36,23 @@ export const CityDetails = () => {
       <div className="flex justify-between w-full">
         <div className="flex flex-col justify-between gap-5">
           <div>
-            <p className="flex items-center text-2xl gap-1 font-medium mb-9">
-              {Icons.Location} <span className="mr-1">{data?.name}</span>
-            </p>
+            <div className="flex items-center gap-3 mb-9">
+              <p className="text-2xl font-medium flex gap-1 ">
+                {Icons.Location}{" "}
+                <span className="mr-1">
+                  {data?.location?.name}, {data?.location?.region},{" "}
+                  {data?.location?.country}
+                </span>
+              </p>
+              <ChangeCity getCityDetails={getCityDetails} />
+            </div>
             <span className="text-5xl font-medium block">
-              {data?.weather[0]?.main}
+              {data?.current?.condition?.text}
             </span>
           </div>
           <div className="mb-10">
             <span className="text-6xl font-medium block">
-              {formatTemperature(data?.main?.temp)}
+              {formatTemperature(data?.current?.temp_c)}
             </span>
             <p className="text-lg">
               {moment.unix(data?.dt).format("dddd")} |{" "}

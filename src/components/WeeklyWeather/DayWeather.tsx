@@ -27,9 +27,13 @@ export const DayWeather = () => {
           <WeatherCondition
             icon={Icons.Humidity}
             condition="Humidity"
-            result="2%"
+            result={weather?.weatherData?.main?.humidity}
           />
-          <WeatherCondition icon={Icons.Sun} condition="UV Index" result="4" />
+          <WeatherCondition
+            icon={Icons.Pressure}
+            condition="Pressure"
+            result={weather?.weatherData?.main?.pressure + "hPa"}
+          />
         </div>
       </div>
     </>
