@@ -1,25 +1,37 @@
 import { skipToken } from "@reduxjs/toolkit/query";
-import { useGetCurrentWeatherQuery, useGetGeoCityDataQuery } from "@store";
+import { useGetGeoCityDataQuery } from "@store";
 import { Icons } from "@utils";
 import clsx from "clsx";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { CityType } from "src/types";
 
-export const ChangeCity = ({ getCityDetails }: any) => {
+interface CityDetailType {
+  getCityDetails: (city: CityType) => void;
+}
+
+export const ChangeCity = ({ getCityDetails }: CityDetailType) => {
   const [showPanel, setShowPanel] = useState<boolean>(false);
+  const [cityValue, setCityValue] = useState<string>("");
   const [showSearchList, setShowSearchList] = useState<boolean>(false);
   const [term, setTerm] = useState<string | symbol>(skipToken);
 
   const { data: cityData } = useGetGeoCityDataQuery(term);
 
   const searchCityHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
+    setCityValue(value);
     if (value.length > 0) {
       setTerm(value);
       setShowSearchList(true);
     } else {
       setShowSearchList(false);
     }
+  };
+
+  const reset = () => {
+    setCityValue("");
+    setShowPanel(false);
+    setShowSearchList(false);
   };
 
   return (
@@ -46,6 +58,7 @@ export const ChangeCity = ({ getCityDetails }: any) => {
         <div className="max-w-96 mx-auto p-4">
           <div className="flex flex-col">
             <input
+              value={cityValue}
               onChange={searchCityHandler}
               placeholder="Search City or Village"
               type="search"
@@ -54,37 +67,27 @@ export const ChangeCity = ({ getCityDetails }: any) => {
             {showSearchList && (
               <div className="border border-gray-300 rounded-lg mt-2 text-sm overflow-hidden">
                 <ul>
-                  {cityData?.map(
-                    (
-                      city: {
-                        name: string;
-                        country: string;
-                        lat: number;
-                        lon: number;
-                      },
-                      index: number
-                    ) => {
-                      const lastItem = index == cityData.length - 1;
-                      return (
-                        <li
-                          key={index}
-                          className={clsx({
-                            ["border-b border-gray-300"]: !lastItem,
-                          })}
+                  {cityData?.map((city: CityType, index: number) => {
+                    const lastItem = index == cityData.length - 1;
+                    return (
+                      <li
+                        key={index}
+                        className={clsx({
+                          ["border-b border-gray-300"]: !lastItem,
+                        })}
+                      >
+                        <button
+                          className="py-2 px-4 w-full text-left bg-white hover:bg-gray-100 transition-colors"
+                          onClick={() => {
+                            getCityDetails(city);
+                            reset();
+                          }}
                         >
-                          <button
-                            className="py-2 px-4 w-full text-left bg-white hover:bg-gray-100 transition-colors"
-                            onClick={() => {
-                              getCityDetails(city);
-                              setShowPanel(false);
-                            }}
-                          >
-                            {city?.name}, {city?.country}
-                          </button>
-                        </li>
-                      );
-                    }
-                  )}
+                          {city?.name}, {city?.region}, {city?.country}
+                        </button>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             )}

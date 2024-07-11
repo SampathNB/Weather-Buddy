@@ -1,3 +1,3 @@
 export function formatTemperature(temp: number) {
-  return Math.round(temp) + "°C";
+  return Math.round(temp) + "°c";
 }

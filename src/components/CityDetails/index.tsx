@@ -9,26 +9,34 @@ import { CityType } from "src/types";
 
 export const CityWeatherDetails = () => {
   const dispatch = useDispatch();
-  const [location, setLocation] = useState<string | symbol>(skipToken);
+  const [location, setLocation] = useState<string | symbol | undefined>(
+    skipToken
+  );
   const { data, isLoading } = useGetCurrentWeatherQuery(location);
 
+  let id: number;
+  const successGeoLocation = (position: GeolocationPosition) => {
+    // console.log(position);
+    let locationData =
+      position?.coords?.latitude + "," + position?.coords?.longitude;
+    setLocation(locationData);
+    navigator.geolocation.clearWatch(id);
+  };
+
   useEffect(() => {
-    navigator.geolocation.watchPosition((position) => {
-      console.log(position);
-      let locationData =
-        position?.coords?.latitude + "," + position?.coords?.longitude;
-      setLocation(locationData);
-    });
+    id = navigator.geolocation.watchPosition((position: GeolocationPosition) =>
+      successGeoLocation(position)
+    );
   }, [navigator.geolocation]);
 
   const getCityDetails = (city: CityType) => {
-    console.log(city);
-    setLocation({ lat: city.lat, lon: city.lon });
+    // console.log(city);
+    setLocation(city.url);
   };
 
   useEffect(() => {
     dispatch(getWeatherData(data));
-    console.log(data);
+    // console.log(data);
   }, [isLoading, data]);
 
   return (
@@ -55,12 +63,21 @@ export const CityWeatherDetails = () => {
               {formatTemperature(data?.current?.temp_c)}
             </span>
             <p className="text-lg">
-              {moment.unix(data?.dt).format("dddd")} |{" "}
-              {moment.unix(data?.dt).format("DD MMMM YYYY")}
+              {moment.unix(data?.current?.last_updated_epoch).format("dddd")} |{" "}
+              {moment
+                .unix(data?.current?.last_updated_epoch)
+                .format("DD MMMM YYYY")}
             </p>
           </div>
         </div>
-        <div className="aspect-square">{Icons.Cloud}</div>
+        <div className="aspect-square">
+          <img
+            width={150}
+            height={150}
+            src={data?.current?.condition?.icon}
+            alt={data?.current?.condition?.text}
+          />
+        </div>
       </div>
     </>
   );

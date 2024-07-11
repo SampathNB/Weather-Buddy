@@ -16,23 +16,27 @@ export const DayWeather = () => {
             condition="Real Feel"
             result={
               weather &&
-              formatTemperature(weather?.weatherData?.main?.feels_like)
+              formatTemperature(weather?.weatherData?.current?.feelslike_c)
             }
           />
           <WeatherCondition
             icon={Icons.Wind}
             condition="Wind"
-            result={weather?.weatherData?.wind?.speed + "m/s"}
-          />
-          <WeatherCondition
-            icon={Icons.Humidity}
-            condition="Humidity"
-            result={weather?.weatherData?.main?.humidity}
+            result={
+              weather?.weatherData?.current?.wind_mph +
+              " m/s " +
+              weather?.weatherData?.current?.wind_dir
+            }
           />
           <WeatherCondition
             icon={Icons.Pressure}
             condition="Pressure"
-            result={weather?.weatherData?.main?.pressure + "hPa"}
+            result={weather?.weatherData?.current?.pressure_mb + " hPa"}
+          />
+          <WeatherCondition
+            icon={Icons.Sun}
+            condition="UV Index"
+            result={weather?.weatherData?.current?.uv}
           />
         </div>
       </div>
