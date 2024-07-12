@@ -1,15 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
 
 export const weatherSlice = createSlice({
   name: "weather",
   initialState: {
     weatherData: {},
+    isLoading: true,
   },
   reducers: {
     getWeatherData: (state, action) => {
-      // console.log(state, action);
-      state.weatherData = action.payload;
+      state.weatherData = action.payload.data;
+      state.isLoading = action.payload?.isLoading;
     },
   },
 });

@@ -1,4 +1,7 @@
 import { CityWeatherDetails, Forecast, WeeklyWeather } from "@components";
+import Loader from "./assets/json/loader.json";
+import Lottie from "lottie-react";
+import { useSelector } from "react-redux";
 
 function App() {
   return (

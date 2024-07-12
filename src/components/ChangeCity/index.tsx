@@ -45,7 +45,7 @@ export const ChangeCity = ({ getCityDetails }: CityDetailType) => {
       </button>
       <div
         className={clsx(
-          "fixed top-0 left-0 bg-white w-1/4 h-screen p-4 min-w-80 pt-9 text-black transition-transform",
+          "fixed top-0 left-0 bg-white w-1/4 h-screen p-4 min-w-80 pt-9 text-black transition-transform z-50",
           { ["translate-x-0"]: showPanel, ["-translate-x-full"]: !showPanel }
         )}
       >

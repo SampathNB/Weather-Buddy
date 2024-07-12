@@ -1,9 +1,10 @@
 import { formatTemperature, Icons } from "@utils";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables, TooltipItem } from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels";
+import ChartDataLabels, { Context } from "chartjs-plugin-datalabels";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { Tooltip } from "node_modules/chart.js/dist";
 
 Chart.register(...registerables, ChartDataLabels);
 
@@ -32,20 +33,10 @@ export const Forecast = () => {
       return day;
     });
 
-  const weatherIcons = forecastDay
-    ?.map((day: { condition: { icon: any } }, index: number) => {
-      if (index % 2 === 0) {
-        return day?.condition?.icon;
-      }
-    })
-    .filter((day: any) => {
-      return day;
-    });
-
   const chanceOfRain = forecastDay
-    ?.map((day: { condition: { icon: any } }, index: number) => {
+    ?.map((day: { chance_of_rain: number }, index: number) => {
       if (index % 2 === 0) {
-        return day?.condition?.icon;
+        return day?.chance_of_rain;
       }
     })
     .filter((day: any) => {
@@ -58,9 +49,8 @@ export const Forecast = () => {
       {
         data: temperatures,
         fill: false,
-        icons: weatherIcons,
-        // chanceOfRain : ,
-        borderColor: "white",
+        chanceOfRain: chanceOfRain,
+        borderColor: "rgba(255,255,255,0.4)",
         tension: 0.3,
       },
     ],
@@ -74,6 +64,12 @@ export const Forecast = () => {
         <Line
           data={data}
           options={{
+            elements: {
+              point: {
+                borderWidth: 2,
+                backgroundColor: "white",
+              },
+            },
             aspectRatio: 2.5,
             plugins: {
               legend: {
@@ -88,16 +84,16 @@ export const Forecast = () => {
                 color: "#A36D07",
                 font: function () {
                   return {
-                    size: 16,
+                    size: 14,
                     weight: "bold",
                   };
                 },
                 formatter: function (_, context: any) {
-                  console.log(context.chart.data);
                   const data = context.chart.data;
-                  return `${formatTemperature(
-                    data.datasets[0].data[context.dataIndex]
-                  )}\n\n${data?.labels[context.dataIndex]}`;
+                  // console.log(data);
+                  return `${
+                    data.datasets[0].data[context.dataIndex] + "°c"
+                  }\n\n${data?.labels[context.dataIndex]}`;
                 },
               },
             },
@@ -116,8 +112,8 @@ export const Forecast = () => {
               padding: {
                 left: 20,
                 right: 20,
-                bottom: 20,
-                top: 20,
+                bottom: 40,
+                top: 40,
               },
             },
           }}

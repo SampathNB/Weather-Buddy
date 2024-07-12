@@ -35,8 +35,7 @@ export const CityWeatherDetails = () => {
   };
 
   useEffect(() => {
-    dispatch(getWeatherData(data));
-    // console.log(data);
+    dispatch(getWeatherData({ data, isLoading }));
   }, [isLoading, data]);
 
   return (
@@ -71,12 +70,14 @@ export const CityWeatherDetails = () => {
           </div>
         </div>
         <div className="aspect-square">
-          <img
-            width={150}
-            height={150}
-            src={data?.current?.condition?.icon}
-            alt={data?.current?.condition?.text}
-          />
+          {data?.current?.condition?.icon && (
+            <img
+              width={150}
+              height={150}
+              src={data?.current?.condition?.icon}
+              alt={data?.current?.condition?.text}
+            />
+          )}
         </div>
       </div>
     </>

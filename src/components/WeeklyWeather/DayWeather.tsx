@@ -6,7 +6,7 @@ export const DayWeather = () => {
   const weather = useSelector((state: any) => state.weatherDetails);
   return (
     <>
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full relative z-10">
         <p className="flex items-center text-xl gap-1 font-medium mb-5">
           AIR Conditions
         </p>
@@ -29,9 +29,12 @@ export const DayWeather = () => {
             }
           />
           <WeatherCondition
-            icon={Icons.Pressure}
-            condition="Pressure"
-            result={weather?.weatherData?.current?.pressure_mb + " hPa"}
+            icon={Icons.Drop}
+            condition="Chances of rain"
+            result={
+              weather?.weatherData?.forecast?.forecastday[0]?.day
+                ?.daily_chance_of_rain + " %"
+            }
           />
           <WeatherCondition
             icon={Icons.Sun}
