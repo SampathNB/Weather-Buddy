@@ -1,10 +1,9 @@
-import { formatTemperature, Icons } from "@utils";
+import { Icons } from "@utils";
 import { Line } from "react-chartjs-2";
-import { Chart, registerables, TooltipItem } from "chart.js";
-import ChartDataLabels, { Context } from "chartjs-plugin-datalabels";
+import { Chart, registerables } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import { useSelector } from "react-redux";
 import moment from "moment";
-import { Tooltip } from "node_modules/chart.js/dist";
 
 Chart.register(...registerables, ChartDataLabels);
 
@@ -50,7 +49,7 @@ export const Forecast = () => {
         data: temperatures,
         fill: false,
         chanceOfRain: chanceOfRain,
-        borderColor: "rgba(255,255,255,0.4)",
+        borderColor: "rgba(255,255,255,0.15)",
         tension: 0.3,
       },
     ],
@@ -58,7 +57,7 @@ export const Forecast = () => {
   return (
     <div className="bg-white bg-opacity-10 p-5 px-7 rounded-[40px] w-2/3">
       <p className="flex items-center text-xl gap-1 font-medium mb-9">
-        {Icons.Time} <span>24-hour forecast</span>
+        {Icons.Time} <span>24 hours forecast</span>
       </p>
       <div>
         <Line
@@ -81,11 +80,11 @@ export const Forecast = () => {
               datalabels: {
                 align: "center",
                 anchor: "center",
-                color: "#A36D07",
+                color: "#fff",
                 font: function () {
                   return {
-                    size: 14,
-                    weight: "bold",
+                    size: 13,
+                    weight: "normal",
                   };
                 },
                 formatter: function (_, context: any) {
@@ -99,12 +98,26 @@ export const Forecast = () => {
             },
             scales: {
               x: {
-                display: false,
+                grid: {
+                  display: false,
+                },
+                ticks: {
+                  color: "rgba(255,255,255,0.4)",
+                },
+                border: {
+                  color: "rgba(255,255,255,0.15)",
+                },
               },
               y: {
-                display: false,
+                grid: {
+                  display: false,
+                },
                 ticks: {
                   stepSize: 2,
+                  color: "rgba(255,255,255,0.4)",
+                },
+                border: {
+                  color: "rgba(255,255,255,0.15)",
                 },
               },
             },
@@ -112,8 +125,6 @@ export const Forecast = () => {
               padding: {
                 left: 20,
                 right: 20,
-                bottom: 40,
-                top: 40,
               },
             },
           }}

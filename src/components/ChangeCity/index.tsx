@@ -2,7 +2,7 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import { useGetGeoCityDataQuery } from "@store";
 import { Icons } from "@utils";
 import clsx from "clsx";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { CityType } from "src/types";
 
 interface CityDetailType {
@@ -10,6 +10,7 @@ interface CityDetailType {
 }
 
 export const ChangeCity = ({ getCityDetails }: CityDetailType) => {
+  const sidebarRef = useRef<HTMLDivElement>(null);
   const [showPanel, setShowPanel] = useState<boolean>(false);
   const [cityValue, setCityValue] = useState<string>("");
   const [showSearchList, setShowSearchList] = useState<boolean>(false);
@@ -28,6 +29,18 @@ export const ChangeCity = ({ getCityDetails }: CityDetailType) => {
     }
   };
 
+  useEffect(() => {
+    const sidebarOutSideClick = (e: any) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+        setShowPanel(false);
+      }
+    };
+    document.addEventListener("click", sidebarOutSideClick);
+    return () => {
+      document.removeEventListener("click", sidebarOutSideClick);
+    };
+  }, [showPanel]);
+
   const reset = () => {
     setCityValue("");
     setShowPanel(false);
@@ -36,61 +49,63 @@ export const ChangeCity = ({ getCityDetails }: CityDetailType) => {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setShowPanel(true)}
-        className="bg-white p-2 text-black rounded-md font-medium"
-      >
-        Change City
-      </button>
-      <div
-        className={clsx(
-          "fixed top-0 left-0 bg-white w-1/4 h-screen p-4 min-w-80 pt-9 text-black transition-transform z-50",
-          { ["translate-x-0"]: showPanel, ["-translate-x-full"]: !showPanel }
-        )}
-      >
-        <div className="flex items-center py-6 justify-center">
-          <div className="border-r border-gray-300 flex-shrink-0 w-1/3 px-6">
-            {Icons.City}
+      <div ref={sidebarRef}>
+        <button
+          type="button"
+          onClick={() => setShowPanel(true)}
+          className="bg-white p-2 text-black rounded-md font-medium"
+        >
+          Change City
+        </button>
+        <div
+          className={clsx(
+            "fixed top-0 left-0 bg-white w-1/4 h-screen p-4 min-w-80 pt-9 text-black transition-transform z-50",
+            { ["translate-x-0"]: showPanel, ["-translate-x-full"]: !showPanel }
+          )}
+        >
+          <div className="flex items-center py-6 justify-center">
+            <div className="border-r border-gray-300 flex-shrink-0 w-1/3 px-6">
+              {Icons.City}
+            </div>
+            <div className=" flex-shrink-0 w-1/3 px-6">{Icons.Village}</div>
           </div>
-          <div className=" flex-shrink-0 w-1/3 px-6">{Icons.Village}</div>
-        </div>
-        <div className="max-w-96 mx-auto p-4">
-          <div className="flex flex-col">
-            <input
-              value={cityValue}
-              onChange={searchCityHandler}
-              placeholder="Search City or Village"
-              type="search"
-              className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:border-theme transition-colors"
-            />
-            {showSearchList && (
-              <div className="border border-gray-300 rounded-lg mt-2 text-sm overflow-hidden">
-                <ul>
-                  {cityData?.map((city: CityType, index: number) => {
-                    const lastItem = index == cityData.length - 1;
-                    return (
-                      <li
-                        key={index}
-                        className={clsx({
-                          ["border-b border-gray-300"]: !lastItem,
-                        })}
-                      >
-                        <button
-                          className="py-2 px-4 w-full text-left bg-white hover:bg-gray-100 transition-colors"
-                          onClick={() => {
-                            getCityDetails(city);
-                            reset();
-                          }}
+          <div className="max-w-96 mx-auto p-4">
+            <div className="flex flex-col">
+              <input
+                value={cityValue}
+                onChange={searchCityHandler}
+                placeholder="Search City or Village"
+                type="search"
+                className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:border-theme transition-colors"
+              />
+              {showSearchList && (
+                <div className="border border-gray-300 rounded-lg mt-2 text-sm overflow-hidden">
+                  <ul>
+                    {cityData?.map((city: CityType, index: number) => {
+                      const lastItem = index == cityData.length - 1;
+                      return (
+                        <li
+                          key={index}
+                          className={clsx({
+                            ["border-b border-gray-300"]: !lastItem,
+                          })}
                         >
-                          {city?.name}, {city?.region}, {city?.country}
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            )}
+                          <button
+                            className="py-2 px-4 w-full text-left bg-white hover:bg-gray-100 transition-colors"
+                            onClick={() => {
+                              getCityDetails(city);
+                              reset();
+                            }}
+                          >
+                            {city?.name}, {city?.region}, {city?.country}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

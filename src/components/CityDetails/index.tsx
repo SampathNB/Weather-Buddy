@@ -16,7 +16,6 @@ export const CityWeatherDetails = () => {
 
   let id: number;
   const successGeoLocation = (position: GeolocationPosition) => {
-    // console.log(position);
     let locationData =
       position?.coords?.latitude + "," + position?.coords?.longitude;
     setLocation(locationData);
@@ -29,8 +28,11 @@ export const CityWeatherDetails = () => {
     );
   }, [navigator.geolocation]);
 
+  useEffect(() => {
+    setLocation("mumbai-maharashtra-india");
+  }, []);
+
   const getCityDetails = (city: CityType) => {
-    // console.log(city);
     setLocation(city.url);
   };
 
@@ -53,9 +55,17 @@ export const CityWeatherDetails = () => {
               </p>
               <ChangeCity getCityDetails={getCityDetails} />
             </div>
-            <span className="text-5xl font-medium block">
-              {data?.current?.condition?.text}
-            </span>
+            <div className="flex items-center gap-4">
+              <span className="text-5xl font-medium block">
+                {data?.current?.condition?.text}
+              </span>
+              {data?.current?.condition?.icon && (
+                <img
+                  src={data?.current?.condition?.icon}
+                  alt={data?.current?.condition?.text}
+                />
+              )}
+            </div>
           </div>
           <div className="mb-10">
             <span className="text-6xl font-medium block">
@@ -68,16 +78,6 @@ export const CityWeatherDetails = () => {
                 .format("DD MMMM YYYY")}
             </p>
           </div>
-        </div>
-        <div className="aspect-square">
-          {data?.current?.condition?.icon && (
-            <img
-              width={150}
-              height={150}
-              src={data?.current?.condition?.icon}
-              alt={data?.current?.condition?.text}
-            />
-          )}
         </div>
       </div>
     </>
