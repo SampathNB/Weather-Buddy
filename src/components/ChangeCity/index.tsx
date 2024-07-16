@@ -2,7 +2,7 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import { useGetGeoCityDataQuery } from "@store";
 import { Icons } from "@utils";
 import clsx from "clsx";
-import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { CityType } from "src/types";
 
 interface CityDetailType {
@@ -15,19 +15,31 @@ export const ChangeCity = ({ getCityDetails }: CityDetailType) => {
   const [cityValue, setCityValue] = useState<string>("");
   const [showSearchList, setShowSearchList] = useState<boolean>(false);
   const [term, setTerm] = useState<string | symbol>(skipToken);
+  const [timeoutId, setTimeoutId] = useState<number | null | any>(null);
 
   const { data: cityData } = useGetGeoCityDataQuery(term);
 
   const searchCityHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCityValue(value);
-    if (value.length > 0) {
-      setTerm(value);
-      setShowSearchList(true);
-    } else {
-      setShowSearchList(false);
-    }
+    clearTimeout(timeoutId);
+    setTimeoutId(
+      setTimeout(() => {
+        if (value.length > 0) {
+          setTerm(value);
+          setShowSearchList(true);
+        } else {
+          setShowSearchList(false);
+        }
+      }, 500)
+    );
   };
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [timeoutId]);
 
   useEffect(() => {
     const sidebarOutSideClick = (e: any) => {

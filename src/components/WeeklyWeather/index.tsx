@@ -38,7 +38,7 @@ export const WeeklyWeather = () => {
       <DayWeather />
 
       <svg
-        className="absolute w-full h-auto left-0 bottom-0 opacity-65"
+        className="absolute w-full h-auto left-0 bottom-0 opacity-25"
         width="222"
         height="136"
         viewBox="0 0 222 136"

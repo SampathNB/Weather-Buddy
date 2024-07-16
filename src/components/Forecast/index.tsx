@@ -89,7 +89,6 @@ export const Forecast = () => {
                 },
                 formatter: function (_, context: any) {
                   const data = context.chart.data;
-                  // console.log(data);
                   return `${
                     data.datasets[0].data[context.dataIndex] + "°c"
                   }\n\n${data?.labels[context.dataIndex]}`;
