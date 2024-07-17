@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ChangeCity } from "../ChangeCity";
 import { CityType } from "src/types";
+import { Skeleton } from "../Skeleton";
 
 export const CityWeatherDetails = () => {
   const dispatch = useDispatch();
@@ -43,10 +44,10 @@ export const CityWeatherDetails = () => {
   return (
     <>
       <div className="flex justify-between w-full">
-        <div className="flex flex-col justify-between gap-5">
+        <div className="flex flex-col justify-between 3xl:gap-5 gap-2">
           <div>
-            <div className="flex items-center gap-3 mb-9">
-              <p className="text-2xl font-medium flex gap-1 ">
+            <div className="flex items-center gap-3 3xl:mb-9 mb-5">
+              <p className="3xl:text-2xl text-xl font-medium flex gap-1 ">
                 {Icons.Location}{" "}
                 <span className="mr-1">
                   {data?.location?.name}, {data?.location?.region},{" "}
@@ -56,7 +57,7 @@ export const CityWeatherDetails = () => {
               <ChangeCity getCityDetails={getCityDetails} />
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-5xl font-medium block">
+              <span className="3xl:text-5xl text-4xl font-medium block">
                 {data?.current?.condition?.text}
               </span>
               {data?.current?.condition?.icon && (
@@ -67,8 +68,8 @@ export const CityWeatherDetails = () => {
               )}
             </div>
           </div>
-          <div className="mb-10">
-            <span className="text-6xl font-medium block">
+          <div className="">
+            <span className="3xl:text-6xl text-5xl font-medium block">
               {formatTemperature(data?.current?.temp_c)}
             </span>
             <p className="text-lg">

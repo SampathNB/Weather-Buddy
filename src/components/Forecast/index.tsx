@@ -32,23 +32,12 @@ export const Forecast = () => {
       return day;
     });
 
-  const chanceOfRain = forecastDay
-    ?.map((day: { chance_of_rain: number }, index: number) => {
-      if (index % 2 === 0) {
-        return day?.chance_of_rain;
-      }
-    })
-    .filter((day: any) => {
-      return day;
-    });
-
   const data = {
     labels: times,
     datasets: [
       {
         data: temperatures,
         fill: false,
-        chanceOfRain: chanceOfRain,
         borderColor: "rgba(255,255,255,0.15)",
         tension: 0.3,
       },
@@ -122,6 +111,7 @@ export const Forecast = () => {
             },
             layout: {
               padding: {
+                top: 25,
                 left: 20,
                 right: 20,
               },

@@ -3,12 +3,12 @@ import { CityWeatherDetails, Forecast, WeeklyWeather } from "@components";
 function App() {
   return (
     <>
-      <div className="p-14 bg-[#373532] h-screen overflow-auto text-white font-inter">
-        <div className="container gap-10 flex flex-col mx-auto h-full">
+      <div className="3xl:py-14 py-8 h-screen overflow-auto text-white font-inter">
+        <div className="container 3xl:gap-16 gap-10 flex flex-col mx-auto h-full px-3">
           <div className="flex flex-row justify-between">
             <CityWeatherDetails />
           </div>
-          <div className="flex gap-10 h-full">
+          <div className="flex xl:gap-10 gap-6 h-full">
             <WeeklyWeather />
             <Forecast />
           </div>
