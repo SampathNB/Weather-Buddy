@@ -20,6 +20,7 @@ export default {
         shimmer: "shimmer 1.5s infinite",
       },
       screens: {
+        xsm: "420px",
         "3xl": "1700px",
       },
     },

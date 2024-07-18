@@ -8,7 +8,7 @@ export const weatherSlice = createSlice({
   },
   reducers: {
     getWeatherData: (state, action) => {
-      state.weatherData = action.payload.data;
+      state.weatherData = action.payload;
       state.isLoading = action.payload?.isLoading;
     },
   },

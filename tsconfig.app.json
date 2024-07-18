@@ -27,7 +27,9 @@
       "@utils": ["./src/utils"],
       "@components": ["./src/components"],
       "@config": ["./src/config"],
-      "@store": ["./src/store"]
+      "@store": ["./src/store"],
+      "@hooks": ["./src/hooks"],
+      "@types": ["./src/types"]
     }
   },
   "include": ["src"]

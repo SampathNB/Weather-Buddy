@@ -1,71 +1,32 @@
-import { skipToken } from "@reduxjs/toolkit/query";
-import { useGetGeoCityDataQuery } from "@store";
 import { Icons } from "@utils";
 import clsx from "clsx";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { CityType } from "src/types";
+import { useChangeCityHook } from "./ChangeCity.hook";
 
 interface CityDetailType {
   getCityDetails: (city: CityType) => void;
 }
 
 export const ChangeCity = ({ getCityDetails }: CityDetailType) => {
-  const sidebarRef = useRef<HTMLDivElement>(null);
-  const [showPanel, setShowPanel] = useState<boolean>(false);
-  const [cityValue, setCityValue] = useState<string>("");
-  const [showSearchList, setShowSearchList] = useState<boolean>(false);
-  const [term, setTerm] = useState<string | symbol>(skipToken);
-  const [timeoutId, setTimeoutId] = useState<number | null | any>(null);
-
-  const { data: cityData } = useGetGeoCityDataQuery(term);
-
-  const searchCityHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setCityValue(value);
-    clearTimeout(timeoutId);
-    setTimeoutId(
-      setTimeout(() => {
-        if (value.length > 0) {
-          setTerm(value);
-          setShowSearchList(true);
-        } else {
-          setShowSearchList(false);
-        }
-      }, 500)
-    );
-  };
-
-  useEffect(() => {
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [timeoutId]);
-
-  useEffect(() => {
-    const sidebarOutSideClick = (e: any) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
-        setShowPanel(false);
-      }
-    };
-    document.addEventListener("click", sidebarOutSideClick);
-    return () => {
-      document.removeEventListener("click", sidebarOutSideClick);
-    };
-  }, [showPanel]);
-
-  const reset = () => {
-    setCityValue("");
-    setShowPanel(false);
-    setShowSearchList(false);
-  };
+  const {
+    cityData,
+    cityValue,
+    showSearchList,
+    showPanel,
+    sidebarRef,
+    reset,
+    searchCityHandler,
+    hidePanelHandler,
+    showPanelHandler,
+  } = useChangeCityHook();
 
   return (
     <>
       <div ref={sidebarRef}>
         <button
           type="button"
-          onClick={() => setShowPanel(true)}
-          className="bg-white p-2 text-black rounded-md font-medium"
+          onClick={showPanelHandler}
+          className="bg-white md:p-2 p-1 md:px-4 px-2 text-black md:rounded-md rounded-sm font-medium md:text-base text-sm"
         >
           Change City
         </button>
@@ -75,6 +36,13 @@ export const ChangeCity = ({ getCityDetails }: CityDetailType) => {
             { ["translate-x-0"]: showPanel, ["-translate-x-full"]: !showPanel }
           )}
         >
+          <span
+            className="inline-flex absolute top-3 right-3"
+            role="button"
+            onClick={hidePanelHandler}
+          >
+            {Icons.Close}
+          </span>
           <div className="flex items-center py-6 justify-center">
             <div className="border-r border-gray-300 flex-shrink-0 w-1/3 px-6">
               {Icons.City}

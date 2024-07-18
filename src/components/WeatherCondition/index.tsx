@@ -12,11 +12,13 @@ export const WeatherCondition = ({
   result,
 }: WeatherCondition) => {
   return (
-    <div className="flex gap-2">
-      <div>{icon}</div>
+    <div className="flex gap-2 items-center">
+      <div className="opacity-60 ">{icon}</div>
       <div>
-        <p className="">{condition}</p>
-        <p>{result}</p>
+        <p className="md:text-lg text-base opacity-60 sm:mb-1">{condition}</p>
+        <p>
+          <b>{result}</b>
+        </p>
       </div>
     </div>
   );
