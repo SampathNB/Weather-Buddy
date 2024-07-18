@@ -1,6 +1,6 @@
 # Weather Buddy
 
-Live weather report app with atrificial view of weather.
+Get the latest weather forecasts, updates, and alerts for your location with our comprehensive weather website.
 
 ## Authors
 
@@ -13,9 +13,9 @@ Live weather report app with atrificial view of weather.
 - [Weather APIs](https://www.weatherapi.com/)
 - [Chartjs](https://www.chartjs.org/)
 
-## Demo
+## Demo Link
 
-Insert gif or link to demo
+Get the latest weather forecasts, updates, and alerts for your location with our comprehensive weather website.
 
 ## Run Locally
 
