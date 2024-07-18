@@ -60,6 +60,7 @@ export const useChangeCityHook = () => {
     cityValue,
     showSearchList,
     showPanel,
+    sidebarRef,
     reset,
     searchCityHandler,
     hidePanelHandler,
