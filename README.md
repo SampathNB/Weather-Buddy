@@ -45,7 +45,7 @@ Start the server
 
 ## Support
 
-For support, email bingisampat@gamil.com.
+For support, email bingisampat@gmail.com.
 
 ## Authors
 
